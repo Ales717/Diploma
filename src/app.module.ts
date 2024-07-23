@@ -9,10 +9,11 @@ import { ReportModule } from './modules/report/report.module';
 import { ServiceModule } from './modules/service/service.module';
 import { OrderModule } from './modules/order/order.module';
 import { TaskModule } from './modules/task/task.module';
+import { AllocationModule } from './modules/allocation/allocation.module';
 
 
 @Module({
-  imports: [PrismaModule, UsersModule, AuthModule, EquipmentModule, ReportModule, ServiceModule, OrderModule, TaskModule],
+  imports: [PrismaModule, UsersModule, AuthModule, EquipmentModule, ReportModule, ServiceModule, OrderModule, TaskModule, AllocationModule],
   controllers: [AppController],
   providers: [AppService],
 })
