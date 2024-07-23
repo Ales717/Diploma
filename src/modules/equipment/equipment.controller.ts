@@ -28,8 +28,6 @@ export class EquipmentController {
         return this.equipmentService.findOne(id);
     }
 
-
-
     @Put(':id')
     update(@Param('id') id: string, @Body() data: UpdateEquipmentDto) {
         return this.equipmentService.update(id, data);
