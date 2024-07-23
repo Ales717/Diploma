@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String       @id @default(uuid())
+  email        String       @unique
+  password     String
+  first_name   String?
+  last_name    String?
+  role         Role         @default(WORKER)
+  availability Boolean      @default(true)
+  allocation   Allocation[]
+  report       Report[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Equipment {
+  id           String       @id @default(uuid())
+  name         String
+  type         String
+  availability Boolean      @default(true)
+  allocation   Allocation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Service {
+  id                   String @id @default(uuid())
+  name                 String
+  description          String
+  requiredEquipment    Json
+  necessaryCompetences Json
+  task                 Task[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Order {
+  id       String   @id @default(uuid())
+  costumer String
+  contact  String
+  date     DateTime
+  task     Task[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Task {
+  id         String       @id @default(uuid())
+  startDate  DateTime
+  done       Boolean      @default(false)
+  serviceId  String
+  orderId    String
+  service    Service      @relation(fields: [serviceId], references: [id])
+  order      Order        @relation(fields: [orderId], references: [id])
+  allocation Allocation[]
+  report     Report[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Allocation {
+  id          String    @id @default(uuid())
+  userId      String
+  equipmentId String
+  taskId      String
+  user        User      @relation(fields: [userId], references: [id])
+  equipment   Equipment @relation(fields: [equipmentId], references: [id])
+  task        Task      @relation(fields: [taskId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Report {
+  id     String   @id @default(uuid())
+  opis   String
+  date   DateTime
+  userId String
+  taskId String
+  user   User     @relation(fields: [userId], references: [id])
+  task   Task     @relation(fields: [taskId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+enum Role {
+  WORKER
+  ADMIN
+}
