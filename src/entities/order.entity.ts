@@ -15,6 +15,9 @@ export class OrderEntity implements Order {
     date: Date;
 
     @ApiProperty()
+    done: boolean;
+
+    @ApiProperty()
     createdAt: Date;
 
     @ApiProperty()

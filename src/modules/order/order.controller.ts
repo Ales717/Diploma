@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { OrderService } from './order.service';
 import { CreateOrderDto, UpdateOrderDto } from './dto/create-update-order.dto';
@@ -21,6 +21,11 @@ export class OrderController {
         return this.orderService.findAll();
     }
 
+    @Get('active')
+    findAvailable() {
+        return this.orderService.findActive();
+    }
+
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.orderService.findOne(id);
@@ -34,5 +39,10 @@ export class OrderController {
     @Delete(':id')
     remove(@Param('id') id: string) {
         return this.orderService.remove(id);
+    }
+
+    @Patch(':id/toggle-status')
+    toggleStatus(@Param('id') id: string) {
+        return this.orderService.toggleStatus(id);
     }
 }

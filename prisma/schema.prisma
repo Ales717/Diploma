@@ -56,6 +56,7 @@ model Order {
   costumer String
   contact  String
   date     DateTime
+  done     Boolean  @default(false)
   task     Task[]
 
   createdAt DateTime @default(now())

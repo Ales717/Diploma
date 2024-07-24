@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsDateString, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsDateString, IsOptional, IsBoolean } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateOrderDto {
@@ -16,6 +16,11 @@ export class CreateOrderDto {
     @IsNotEmpty()
     @IsDateString()
     date: string;
+
+    @ApiProperty({ required: false })
+    @IsOptional()
+    @IsBoolean()
+    done?: boolean = false;
 }
 
 export class UpdateOrderDto {
@@ -33,4 +38,9 @@ export class UpdateOrderDto {
     @IsOptional()
     @IsDateString()
     date?: string;
+
+    @ApiProperty({ required: false })
+    @IsOptional()
+    @IsBoolean()
+    done?: boolean = false;
 }
